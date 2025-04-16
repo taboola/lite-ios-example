@@ -40,3 +40,22 @@ fastlane/test_output
 
 # Xcode Preview
 *.swiftpm/
+
+# Xcode workspace files
+*.xcworkspace/
+*.xcworkspace/*
+
+# Xcode user data
+*.xcuserstate
+*.xcuserdata/
+project.xcworkspace/
+project.xcworkspace/*
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Build artifacts
+build/
+DerivedData/
+Pods/
