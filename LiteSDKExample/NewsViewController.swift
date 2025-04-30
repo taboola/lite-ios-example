@@ -11,13 +11,19 @@ class NewsViewController: UIViewController, OnTaboolaNewsListener, UITabBarContr
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        TBLSDK.shared.addTaboolaNewsToView(view)
+    }
+    
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-            // Check which tab was selected
-            if let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController) ,selectedIndex == 2 {
-                    TBLSDK.shared.onScrollToTopTaboolaNews()
-            }
+        // Check which tab was selected and if it's the same as current tab
+        if let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController),
+           selectedIndex == 2,
+           tabBarController.selectedIndex == 2 {  // Check if we're already in this tab
+            TBLSDK.shared.onScrollToTopTaboolaNews()
         }
+    }
     
     deinit {
         TBLSDK.shared.removeTaboolaNewsFromView()
@@ -25,8 +31,7 @@ class NewsViewController: UIViewController, OnTaboolaNewsListener, UITabBarContr
     }
     
     private func setupUI() {
-        view.backgroundColor = .systemBackground
-                title = "News"
+        title = "News"
         TBLSDK.shared.addTaboolaNewsToView(view)
         TBLSDK.shared.setOnTaboolaNewsListener(self)
     }

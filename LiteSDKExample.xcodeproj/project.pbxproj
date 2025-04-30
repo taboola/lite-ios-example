@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB3F35AF2DAFAF7C0035E12B /* TaboolaLite in Frameworks */ = {isa = PBXBuildFile; productRef = DB3F35AE2DAFAF7C0035E12B /* TaboolaLite */; };
+		DBE2D7412DB6248500E682AF /* TaboolaLite in Frameworks */ = {isa = PBXBuildFile; productRef = DBE2D7402DB6248500E682AF /* TaboolaLite */; };
+		DBE2D7422DB62D6900E682AF /* TaboolaLite in Embed Frameworks */ = {isa = PBXBuildFile; productRef = DBE2D7402DB6248500E682AF /* TaboolaLite */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		DBE4280F2D82ECC40060DCDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE4280E2D82ECC40060DCDF /* AppDelegate.swift */; };
 		DBE428112D82ECC40060DCDF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE428102D82ECC40060DCDF /* SceneDelegate.swift */; };
 		DBE428162D82ECC40060DCDF /* Base in Resources */ = {isa = PBXBuildFile; fileRef = DBE428152D82ECC40060DCDF /* Base */; };
@@ -47,6 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DBE2D7422DB62D6900E682AF /* TaboolaLite in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB3F35AF2DAFAF7C0035E12B /* TaboolaLite in Frameworks */,
+				DBE2D7412DB6248500E682AF /* TaboolaLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +182,7 @@
 			);
 			name = LiteSDKExample;
 			packageProductDependencies = (
-				DB3F35AE2DAFAF7C0035E12B /* TaboolaLite */,
+				DBE2D7402DB6248500E682AF /* TaboolaLite */,
 			);
 			productName = LiteSDKExample;
 			productReference = DBE4280B2D82ECC40060DCDF /* LiteSDKExample.app */;
@@ -255,7 +257,7 @@
 			);
 			mainGroup = DBE428022D82ECC40060DCDF;
 			packageReferences = (
-				DB3F35AD2DAFAF7C0035E12B /* XCLocalSwiftPackageReference "../TaboolaLite" */,
+				DBE2D73F2DB6248500E682AF /* XCLocalSwiftPackageReference "../TaboolaLite" */,
 			);
 			productRefGroup = DBE4280C2D82ECC40060DCDF /* Products */;
 			projectDirPath = "";
@@ -487,7 +489,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ZZMSXYL4ND;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -502,7 +504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = taboola.LiteSDKExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -517,7 +519,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ZZMSXYL4ND;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -532,7 +534,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = taboola.LiteSDKExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -661,14 +663,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		DB3F35AD2DAFAF7C0035E12B /* XCLocalSwiftPackageReference "../TaboolaLite" */ = {
+		DBE2D73F2DB6248500E682AF /* XCLocalSwiftPackageReference "../TaboolaLite" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../TaboolaLite;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DB3F35AE2DAFAF7C0035E12B /* TaboolaLite */ = {
+		DBE2D7402DB6248500E682AF /* TaboolaLite */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TaboolaLite;
 		};
