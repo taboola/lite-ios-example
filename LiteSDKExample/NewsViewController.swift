@@ -2,6 +2,20 @@ import UIKit
 import TaboolaLite
 
 class NewsViewController: UIViewController, UITabBarControllerDelegate, OnTBLNewsListener {
+    func onTaboolaNewsRefreshComplete(statusCode: TaboolaLite.TBLStatusCode) {
+        if statusCode == TBLStatusCode.success {
+            self.showAlert(
+                title: "Success",
+                message: "Taboola news refresh completed successfully"
+            )
+        } else {
+            self.showAlert(
+                title: "Setup Failed",
+                message: "Taboola news refresh failed: \(statusCode.message)"
+            )
+        }
+    }
+    
     func onTaboolaNewsSetupComplete(statusCode: TaboolaLite.TBLStatusCode) {
         DispatchQueue.main.async { [weak self] in
             if statusCode == TBLStatusCode.success {

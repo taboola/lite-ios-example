@@ -164,8 +164,8 @@ class HomeViewController: UIViewController {
         TBLSDK.shared.setLogLevel(logLevel)
         
         // Get and validate reload intervals
-        let reloadTime = Int(reloadTimeTextField.text ?? "") ?? 1
-        let interval = Int(intervalTextField.text ?? "") ?? 1
+        let reloadTime = reloadTimeTextField.text != nil ? Int(reloadTimeTextField.text!) : nil
+        let interval = intervalTextField.text != nil ? Int(intervalTextField.text!) : nil
         
         // Update reload intervals
         TBLSDK.shared.updateReloadIntervals(reloadTime, interval)
