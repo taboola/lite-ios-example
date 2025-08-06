@@ -27,6 +27,46 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         
         print("Scene delegate configured window with TabBarController")
+        
+        // Handle deeplinks when app is launched from a URL
+        if let urlContext = connectionOptions.urlContexts.first {
+            handleDeeplink(url: urlContext.url)
+        }
+    }
+    
+    // MARK: URL Handling for iOS 13+ (scene-based apps)
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let urlContext = URLContexts.first {
+            handleDeeplink(url: urlContext.url)
+        }
+    }
+    
+    private func handleDeeplink(url: URL) {
+        print("Scene handling deeplink: \(url.absoluteString)")
+        
+        // Handle line:// URLs
+        if url.scheme == "line" {
+            switch url.host {
+            case "nv":
+                if url.path == "/newsRow" {
+                    // Navigate to news tab and potentially scroll to a specific item
+                    navigateToNewsTab()
+                }
+            default:
+                print("Unhandled line deeplink: \(url.absoluteString)")
+            }
+        }
+    }
+    
+    private func navigateToNewsTab() {
+        DispatchQueue.main.async { [weak self] in
+            // Navigate to the news tab
+            if let tabBarController = self?.window?.rootViewController as? UITabBarController {
+                // Navigate to the news tab (index 2 based on the tab structure)
+                tabBarController.selectedIndex = 2
+                print("Navigated to news tab via deeplink")
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

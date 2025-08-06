@@ -49,13 +49,13 @@ class HomeViewController: UIViewController {
         return textField
     }()
     
-    private lazy var applyButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Initialize", for: .normal)
-        button.addTarget(self, action: #selector(applyConfiguration), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+//    private lazy var applyButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle("Initialize", for: .normal)
+//        button.addTarget(self, action: #selector(applyConfiguration), for: .touchUpInside)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
     
     private lazy var collectUserDataSwitch: UISwitch = {
         let uiSwitch = UISwitch()
@@ -125,7 +125,7 @@ class HomeViewController: UIViewController {
         stackView.addArrangedSubview(publisherIdLabel)
         stackView.addArrangedSubview(publisherIdTextField)
         stackView.addArrangedSubview(collectUserDataContainer)
-        stackView.addArrangedSubview(applyButton)
+//        stackView.addArrangedSubview(applyButton)
         
         view.addSubview(stackView)
         
@@ -135,7 +135,7 @@ class HomeViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            applyButton.heightAnchor.constraint(equalToConstant: 44),
+//            applyButton.heightAnchor.constraint(equalToConstant: 44),
         ])
         
         // Add tap gesture to dismiss keyboard

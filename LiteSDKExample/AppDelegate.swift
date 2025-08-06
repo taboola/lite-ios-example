@@ -22,6 +22,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         TBLSDK.shared.deinitialize()
     }
+    
+    // MARK: URL Handling for iOS versions before 13.0 (when app doesn't support scenes)
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return handleDeeplink(url: url)
+    }
+    
+    private func handleDeeplink(url: URL) -> Bool {
+        print("Handling deeplink: \(url.absoluteString)")
+        
+        // Handle line:// URLs
+        if url.scheme == "line" {
+            switch url.host {
+            case "nv":
+                if url.path == "/newsRow" {
+                    // Navigate to news tab and potentially scroll to a specific item
+                    navigateToNewsTab()
+                    return true
+                }
+            default:
+                print("Unhandled line deeplink: \(url.absoluteString)")
+            }
+        }
+        
+        return false
+    }
+    
+    private func navigateToNewsTab() {
+        DispatchQueue.main.async {
+            // Get the main window and navigate to news tab
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first,
+               let tabBarController = window.rootViewController as? UITabBarController {
+                // Navigate to the news tab (index 2 based on the tab structure)
+                tabBarController.selectedIndex = 2
+                print("Navigated to news tab via deeplink")
+                print("testttt")
+            }
+        }
+    }
 
     // MARK: UISceneSession Lifecycle
 
