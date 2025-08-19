@@ -114,10 +114,7 @@ class MyApplication : Application() {
 
         val publisherId = "Taboola_sdk-tester-demo-line"
         val userData = TBLUserData(
-            "hashedEmail",
-            "gender",
-            "age",
-            "userInterestAndIntent")
+            "hashedEmail")
 
         TBLSDK.initialize(this, publisherId, userData, object : OnTBLListener {
             override fun onTaboolaInitializationComplete(statusCode: TBLStatusCode) {
@@ -184,11 +181,7 @@ This will remove the WebView and all internal listeners, and ensure the SDK no l
 Allows you to update or provide user data after initialization.
 
 ```kotlin
-val userData = TBLUserData(
-    "hashedEmail1",
-    "gender",
-    "age",
-    "userInterestAndIntent")
+val userData = TBLUserData("hashedEmail1")
 TBLSDK.setUserData(userData)
 ```
 
