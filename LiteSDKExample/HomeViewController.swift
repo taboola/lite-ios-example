@@ -209,7 +209,7 @@ class HomeViewController: UIViewController {
         
         TBLSDK.shared.removeTaboolaNewsFromView()
         TBLSDK.shared.deinitialize()
-        let userData = TBLUserData(hashedEmail: "hashedEmail", gender: "gender", age: "age", userInterestAndIntent: "userInterestAndIntent")
+        let userData = TBLUserData(hashedEmail: "hashedEmail")
         TBLSDK.shared.initialize(publisherId: finalPublisherId, data: userData, onTaboolaListener: TaboolaNewsListener(parentView: self.view))
     }
     

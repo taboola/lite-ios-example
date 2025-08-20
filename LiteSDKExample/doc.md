@@ -113,11 +113,7 @@ class MyApplication : Application() {
         super.onCreate()
 
         val publisherId = "Taboola_sdk-tester-demo-line"
-        val userData = TBLUserData(
-            "hashedEmail",
-            "gender",
-            "age",
-            "userInterestAndIntent")
+        val userData = TBLUserData("hashedEmail")
         
         TBLSDK.initialize(this, publisherId, userData, OnTBLListener())
     }
@@ -163,11 +159,7 @@ override fun onDestroyView() {
 After initialization, you can optionally update user data using `TBLSDK.setUserData`.
 
 ```kotlin
-val userData = TBLUserData(
-    "hashedEmail1",
-    "gender",
-    "age",
-    "userInterestAndIntent")
+val userData = TBLUserData("hashedEmail1")
 TBLSDK.setUserData(userData)
 ```
 
