@@ -1,6 +1,8 @@
 import UIKit
 import TaboolaLite
 import CoreLocation
+import AppTrackingTransparency
+import AdSupport
 
 class HomeViewController: UIViewController {
     
@@ -68,11 +70,21 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupLocationManager()
         loadSavedConsentPreferences()
+        disableInputs()
         
         // Set initial configuration
         TBLSDK.shared.setLogLevel(.debug)
+        
+        // Add target for collect user data switch
+        collectUserDataSwitch.addTarget(self, action: #selector(collectUserDataSwitchChanged), for: .valueChanged)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Request App Tracking Transparency permission
+        requestTrackingPermission()
     }
     
     // MARK: - UI Setup
@@ -143,6 +155,20 @@ class HomeViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
     
+    private func disableInputs() {
+        // Disable all inputs except the collect user data switch
+        logLevelSegmentedControl.isEnabled = false
+        reloadTimeTextField.isEnabled = false
+        intervalTextField.isEnabled = false
+        publisherIdTextField.isEnabled = false
+        
+        // Optional: Make disabled inputs visually appear disabled
+        logLevelSegmentedControl.alpha = 0.5
+        reloadTimeTextField.alpha = 0.5
+        intervalTextField.alpha = 0.5
+        publisherIdTextField.alpha = 0.5
+    }
+    
     // MARK: - Actions
     @objc private func applyConfiguration() {
         // Get log level based on selected segment
@@ -184,18 +210,66 @@ class HomeViewController: UIViewController {
         TBLSDK.shared.removeTaboolaNewsFromView()
         TBLSDK.shared.deinitialize()
         let userData = TBLUserData(hashedEmail: "hashedEmail", gender: "gender", age: "age", userInterestAndIntent: "userInterestAndIntent")
-        TBLSDK.shared.initialize(publisherId: finalPublisherId, data: userData, onTaboolaListener: TaboolaNewsListener())
+        TBLSDK.shared.initialize(publisherId: finalPublisherId, data: userData, onTaboolaListener: TaboolaNewsListener(parentView: self.view))
     }
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     
-    // MARK: - Location Manager Setup
-    private func setupLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        requestLocationPermission()
+    @objc private func collectUserDataSwitchChanged() {
+        let collectUserData = collectUserDataSwitch.isOn
+        TBLSDK.shared.setCollectUserData(granted: collectUserData)
+        
+        // Optionally save the preference immediately
+        let publisherId = publisherIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? DEFAULT_PUBLISHER_ID
+        let finalPublisherId = publisherId.isEmpty ? DEFAULT_PUBLISHER_ID : publisherId
+        saveConsentPreferences(collectUserData: collectUserData, publisherId: finalPublisherId)
+    }
+    
+    // MARK: - App Tracking Transparency
+    private func requestTrackingPermission() {
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                DispatchQueue.main.async { [weak self] in
+                    switch status {
+                    case .authorized:
+                        print("✅ Tracking permission granted")
+                        self?.logIDFAStatus()
+                    case .denied:
+                        print("❌ Tracking permission denied")
+                        self?.logIDFAStatus()
+                    case .restricted:
+                        print("⚠️ Tracking permission restricted")
+                        self?.logIDFAStatus()
+                    case .notDetermined:
+                        print("🤷 Tracking permission not determined")
+                        self?.logIDFAStatus()
+                    @unknown default:
+                        print("🤔 Unknown tracking permission status")
+                        self?.logIDFAStatus()
+                    }
+                }
+            }
+        } else {
+            // iOS 13 and below - IDFA is available without explicit permission
+            print("📱 iOS 13 or below - IDFA available")
+            logIDFAStatus()
+        }
+    }
+    
+    private func logIDFAStatus() {
+        let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        let isTrackingEnabled = ASIdentifierManager.shared().isAdvertisingTrackingEnabled
+        
+        print("🆔 IDFA: \(idfa)")
+        print("📊 Tracking Enabled: \(isTrackingEnabled)")
+        
+        if idfa == "00000000-0000-0000-0000-000000000000" {
+            print("⚠️ IDFA is all zeros - tracking not permitted or app needs to request permission")
+        } else {
+            print("✅ Valid IDFA obtained")
+        }
     }
     
     // MARK: - User Data Consent Methods
@@ -218,46 +292,6 @@ class HomeViewController: UIViewController {
         userDefaults.synchronize()
     }
     
-    @objc private func requestLocationPermission() {
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
-            showLocationPermissionAlert()
-        case .authorizedWhenInUse, .authorizedAlways:
-            print("Location access is already granted!")
-//            showLocationGrantedAlert()
-        @unknown default:
-            break
-        }
-    }
-    
-    private func showLocationPermissionAlert() {
-        let alert = UIAlertController(
-            title: "Location Permission",
-            message: "Location access is currently disabled. Please enable it in Settings to use this feature.",
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "Settings", style: .default) { _ in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL)
-            }
-        })
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        present(alert, animated: true)
-    }
-    
-    private func showLocationGrantedAlert() {
-        let alert = UIAlertController(
-            title: "Location Permission",
-            message: "Location access is already granted!",
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
-    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -267,33 +301,3 @@ extension HomeViewController: UITextFieldDelegate {
         return true
     }
 }
-
-// MARK: - CLLocationManagerDelegate
-extension HomeViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedWhenInUse, .authorizedAlways:
-            print("Location permission granted")
-            // You can start location updates here if needed
-            // locationManager.startUpdatingLocation()
-        case .denied, .restricted:
-            print("Location permission denied")
-        case .notDetermined:
-            print("Location permission not determined")
-        @unknown default:
-            break
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // Handle location updates here if you start location updates
-        if let location = locations.last {
-            print("Current location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Location manager failed with error: \(error.localizedDescription)")
-    }
-}
-

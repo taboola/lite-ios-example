@@ -6,7 +6,13 @@ import TaboolaLite
  * Default implementation of OnTaboolaNewsListener that provides common UI behaviors
  * for error handling and sharing functionality.
  */
-public class TaboolaNewsListener: OnTBLListener {
+public class TaboolaNewsListener: OnTBLListener, OnTBLNewsListener {
+    
+    private let parentView: UIView
+    
+    public init(parentView: UIView) {
+        self.parentView = parentView
+    }
     
     public func onTaboolaLoadComplete(statusCode: TBLStatusCode) {
         if statusCode == TBLStatusCode.success {
@@ -26,6 +32,7 @@ public class TaboolaNewsListener: OnTBLListener {
     
     public func onTaboolaInitializationComplete(statusCode: TBLStatusCode) {
         if statusCode == TBLStatusCode.success {
+            TBLSDK.shared.setupTaboolaNews(view: self.parentView, onTBLNewsListener: self)
             self.showAlert(
                 title: "Success",
                 message: "Taboola initialization completed successfully"
@@ -69,6 +76,36 @@ public class TaboolaNewsListener: OnTBLListener {
                 }
                 
                 topVC.present(activityViewController, animated: true)
+            }
+        }
+    }
+    
+    public func onTaboolaNewsRefreshComplete(statusCode: TaboolaLite.TBLStatusCode) {
+        if statusCode == TBLStatusCode.success {
+            self.showAlert(
+                title: "Success",
+                message: "Taboola news refresh completed successfully"
+            )
+        } else {
+            self.showAlert(
+                title: "Setup Failed",
+                message: "Taboola news refresh failed: \(statusCode.message)"
+            )
+        }
+    }
+    
+    public func onTaboolaNewsSetupComplete(statusCode: TaboolaLite.TBLStatusCode) {
+        DispatchQueue.main.async { [weak self] in
+            if statusCode == TBLStatusCode.success {
+                self?.showAlert(
+                    title: "Success",
+                    message: "Taboola news setup completed successfully"
+                )
+            } else {
+                self?.showAlert(
+                    title: "Setup Failed",
+                    message: "Taboola news setup failed: \(statusCode.message)"
+                )
             }
         }
     }

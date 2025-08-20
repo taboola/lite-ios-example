@@ -35,6 +35,6 @@ class MessagesViewController: UIViewController {
     }
     
     @objc private func openCTBButtonTapped() {
-        TBLSDK.shared.onClickedTaboolaItem(url:"http://localhost:3000/new-summary-page/7208118686570174366?utm_source=taboola&utm_medium=taboola_news&dc_data=4384118_lineplus-us-android&origin_referral_type=gam",viewController: self)
+        TBLSDK.shared.onClickedTaboolaItem(url:"https://nova.taboolanews.com/new-summary-page/7208118686570174366?utm_source=taboola&utm_medium=taboola_news&dc_data=4384118_lineplus-us-android&origin_referral_type=gam",viewController: self)
     }
 } 
