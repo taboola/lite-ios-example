@@ -260,10 +260,8 @@ class HomeViewController: UIViewController {
     
     private func logIDFAStatus() {
         let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
-        let isTrackingEnabled = ASIdentifierManager.shared().isAdvertisingTrackingEnabled
         
         print("🆔 IDFA: \(idfa)")
-        print("📊 Tracking Enabled: \(isTrackingEnabled)")
         
         if idfa == "00000000-0000-0000-0000-000000000000" {
             print("⚠️ IDFA is all zeros - tracking not permitted or app needs to request permission")

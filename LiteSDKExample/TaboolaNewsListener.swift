@@ -110,6 +110,20 @@ public class TaboolaNewsListener: OnTBLListener, OnTBLNewsListener {
         }
     }
     
+    public func onTaboolaNewsClickComplete(statusCode: TBLStatusCode) {
+        if statusCode == TBLStatusCode.success {
+//            self.showAlert(
+//                title: "Success",
+//                message: "Taboola news click completed successfully"
+//            )
+        } else {
+            self.showAlert(
+                title: "Click Failed",
+                message: "Taboola news click failed: \(statusCode.message)"
+                )
+        }
+    }
+    
     // MARK: - Private Helper Methods
     
     private func showAlert(title: String, message: String) {

@@ -13,7 +13,7 @@ class NewsViewController: UIViewController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         let finalPublisherId = "lineplus-us-ios"
-        let userData = TBLUserData(hashedEmail: "hashedEmail", gender: "gender", age: "age", userInterestAndIntent: "userInterestAndIntent")
+        let userData = TBLUserData(hashedEmail: "hashedEmail")
         TBLSDK.shared.initialize(publisherId: finalPublisherId, data: userData, onTaboolaListener: TaboolaNewsListener(parentView: view))
         if let tabBarController = self.tabBarController {
             tabBarController.delegate = self
